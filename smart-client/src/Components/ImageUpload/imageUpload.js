@@ -4,7 +4,7 @@ import ImageDisplay from '../DisplayImage/imageDisplay'
 import Clarifai from 'clarifai'
 import {FormControl,Select,MenuItem} from '@material-ui/core'
 import mDropDown from './dropdownValue'
-import {imageDetect} from '../utils/imageDetection'
+import {imageDetect} from '../../utils/imageDetection'
 import {useStateValue} from '../../Core/state';
 import {toast} from 'react-toastify'
 import useLoader from '../Loading&Notification/loadingHook.js'

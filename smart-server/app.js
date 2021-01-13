@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const helmet = require('helmet');
 const router = require('./routes/index');
+const cors = require('cors');
 
-app.use(helmet());
+// app.use(helmet());
+
+app.use(cors());
 
 app.use(express.json());
 

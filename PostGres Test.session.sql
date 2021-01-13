@@ -5,4 +5,8 @@
 -- ('DemoGraphics',3),
 -- ('Find Food',4)
 
-SELECT * FROM clarifai_type
+SELECT * FROM users;
+
+-- SELECT * FROM login;
+
+-- ALTER TABLE users ALTER COLUMN joined DROP NOT NULL;

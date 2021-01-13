@@ -1,35 +1,43 @@
 import React, { useState } from 'react'
 import './login.scss'
 import {NavLink,withRouter,useHistory} from 'react-router-dom'
+import {registerAPI,loginAPI} from '../../API/auth'
+
 
 const Login = ({location}) => {
   // location.pathname
-  const [userName,setUserName] = useState('');
+  const [name,setName] = useState('');
   const [password,setPassword] = useState('');
   const [email,setEmail] = useState('');
   const history = useHistory();
 
-  const onLogin = (e) => {
+  const onLogin = async (e) => {
     e.preventDefault();
 
     const valueL = {
-      userName,
+      email,
       password
     }
-    alert(JSON.stringify(valueL));
-    history.push('/home');
+    const data = await loginAPI(valueL);
+    const {name} = data;
+    if(name) {
+      history.push('/home');
+    } else {
+      return;
+    }
   }
 
   const onRegister = (e) => {
     e.preventDefault();
 
     const valueR = {
-      userName,
+      name,
       password,
       email
     }
 
-    alert(valueR);
+    const data = registerAPI(valueR);
+    console.log(data);
   }
 
     return (
@@ -50,13 +58,13 @@ const Login = ({location}) => {
                     {
                       location.pathname === '/login' ? 
                       <> 
-                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="username" onChange={(e) => {setUserName(e.target.value)}} required/>
+                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="email" onChange={(e) => {setEmail(e.target.value)}} required/>
                         <input type="password" id="password" className="fadeIn third" name="password" placeholder="password" onChange={(e) => {setPassword(e.target.value)}} required/>
                         <button type='submit' className="fadeIn button-space" onClick={onLogin}>LOGIN</button>
                       </> 
                       : 
                       <>
-                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="username" onChange={(e) => {setUserName(e.target.value)}} required/>
+                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="username" onChange={(e) => {setName(e.target.value)}} required/>
                         <input type="password" id="password" className="fadeIn third" name="password" placeholder="password"  onChange={(e) => {setPassword(e.target.value)}} required/>
                         <input type="email" id="password" className="fadeIn" name="email" placeholder="e-mail"  onChange={(e) => {setEmail(e.target.value)}} required/>
                         <button type='submit' className="fadeIn button-space" onClick={onRegister}>REGISTER</button>

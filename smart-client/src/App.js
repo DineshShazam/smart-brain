@@ -4,6 +4,7 @@ import Navbar from './Components/Navigation/navbar';
 import Logo from './Components/Logo/logo';
 import ImageUpload from './Components/ImageUpload/imageUpload'
 import Login from './Components/Authentication/login'
+import RankEntries from './Components/RankEntries/rankEntries'
 import Particles from 'react-particles-js';
 import {ToastContainer} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,7 +30,12 @@ function App() {
       {/* Rank Component */}
       <Switch>
         <Redirect exact from='/' to='/login' />
-        <Route exact path='/home' component={ImageUpload} />
+        <Route exact path='/home' render={() => 
+          <>
+            <RankEntries/>
+            <ImageUpload/>
+          </>
+        }/>
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Login} />
         {/* <Route exact path='/login'><Login /></Route>
