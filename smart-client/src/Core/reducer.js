@@ -2,7 +2,10 @@ export const initState = {
     imageURL : '',
     imageBox : {},
     Celeb : '',
-    DemoGraph : {}
+    DemoGraph : {},
+    userDetails : {},
+    entriesValue: '',
+    entriesValueBol : false,
 }
 
 
@@ -45,6 +48,19 @@ const reducer = (state,action) => {
                  Celeb : '',
                  DemoGraph: {},
                  imageBox : {},
+            }
+        
+        case 'USERDETAILS' : 
+            return {
+                ...state,
+                userDetails: action.payload
+            }
+
+        case 'ENTRIESDETAILS' : 
+            return {
+                ...state,
+                entriesValue : action.payload,
+                entriesValueBol : true
             }
     
         default:

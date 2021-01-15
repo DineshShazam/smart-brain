@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "database": "smart_brain",
+            "username": "postgres",
+            "name": "PostGres Test",
+            "password": "Dinesh@16"
+        }
+    ]
+}
