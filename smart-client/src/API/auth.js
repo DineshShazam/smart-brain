@@ -1,14 +1,17 @@
-import axios from './smartBrain.endpoint';
+import axios from './endPoint/smartBrain.endpoint';
 
-export const registerAPI = (value) => {
-    axios({
-        url:'/register',
-        data:value
-    }).then((result) => {
-        return result;
-    }).catch((error) => {
-        console.log(`registerAPI error, ${error}`);
-    })
+export const registerAPI = async (value) => {
+
+    try {
+      const {data} = await axios({
+            url:'/register',
+            data:value
+        });
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.log(`RegisterAPI, $${error}`);
+    }
 }
 
 export const loginAPI = async (value) => {

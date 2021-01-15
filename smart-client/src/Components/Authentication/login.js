@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './login.scss'
 import {NavLink,withRouter,useHistory} from 'react-router-dom'
 import {registerAPI,loginAPI} from '../../API/auth'
+import { useStateValue } from '../../Core/state'
 
 
 const Login = ({location}) => {
@@ -11,6 +12,8 @@ const Login = ({location}) => {
   const [email,setEmail] = useState('');
   const history = useHistory();
 
+  const [state,dispatch] = useStateValue();
+
   const onLogin = async (e) => {
     e.preventDefault();
 
@@ -19,15 +22,19 @@ const Login = ({location}) => {
       password
     }
     const data = await loginAPI(valueL);
-    const {name} = data;
-    if(name) {
+    // const {name,email} = data;
+    if(data.name && data.email) {
+      dispatch({
+        type:'USERDETAILS',
+        payload: data
+      });
       history.push('/home');
     } else {
       return;
     }
   }
 
-  const onRegister = (e) => {
+  const onRegister = async (e) => {
     e.preventDefault();
 
     const valueR = {
@@ -36,8 +43,17 @@ const Login = ({location}) => {
       email
     }
 
-    const data = registerAPI(valueR);
+    const data = await registerAPI(valueR);
     console.log(data);
+    if(data.name && data.email) {
+      dispatch({
+        type:'USERDETAILS',
+        payload: data
+      });
+      history.push('/home');
+    } else {
+      return;
+    }
   }
 
     return (

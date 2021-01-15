@@ -3,16 +3,16 @@ import './imageUpload.css'
 import ImageDisplay from '../DisplayImage/imageDisplay'
 import Clarifai from 'clarifai'
 import {FormControl,Select,MenuItem} from '@material-ui/core'
-import mDropDown from './dropdownValue'
 import {imageDetect} from '../../utils/imageDetection'
 import {useStateValue} from '../../Core/state';
 import {toast} from 'react-toastify'
 import useLoader from '../Loading&Notification/loadingHook.js'
+import {imageEntries,clarifaiDropdown} from '../../API/image'
 
 
 const ImageUpload = () => {
 
-    const [{imageURL},dispatch] = useStateValue();
+    const [{imageURL,userDetails},dispatch] = useStateValue();
     const [mValue,setMvalue] = useState('Choose Options');
 
     // Custom Hook
@@ -20,10 +20,23 @@ const ImageUpload = () => {
     // Clarifai.FACE_DETECT_MODEL,Clarifai.CELEBRITY_MODEL,
     // Clarifai.DEMOGRAPHICS_MODEL,Clarifai.FOOD_MODEL
 
+    const [dropdownType,setDropdownType] = useState([]);
     const app = new Clarifai.App({
         apiKey: 'bdd12b71f8c149468592c8059018a545'
     })
 
+    let userDetBool = false;
+    (userDetails !== {}) ? (userDetBool = true) : (userDetBool = false);
+
+    useEffect(() => {
+
+        (async () => {
+            console.log('clarifai dropdown method called');
+            setDropdownType(await clarifaiDropdown());
+            console.log(dropdownType);            
+        })();
+       
+    },[userDetBool])
 
     const onChange = (e) => {
         e.preventDefault();
@@ -38,6 +51,7 @@ const ImageUpload = () => {
         dispatch({
             type:'EMPTY_VALUE'
         })
+        setMvalue('Choose Options')
     }
 
     const onSubmit = (e) => {
@@ -58,8 +72,16 @@ const ImageUpload = () => {
         
     }
 
+    const entriesCount = async(email,update) => {
+      const count = await imageEntries(email,update);
+      console.log(count);
+      dispatch({
+          type:'ENTRIESDETAILS',
+          payload: count
+      })  
+    }
+
     useEffect(() => {
-        
         if(mValue === 'Choose Options') {
             return;
         } else {
@@ -76,6 +98,7 @@ const ImageUpload = () => {
                             type:'BOUNDING_BOX',
                             payload: faceBox
                         })
+                        entriesCount(userDetails.email,1);
                         hideLoader();   
                    }).catch((err) => {
                         hideLoader();
@@ -99,6 +122,7 @@ const ImageUpload = () => {
                              type:'CELEBIRITY',
                              payload:name
                          })
+                         entriesCount(userDetails.email,1);
                          hideLoader();
                     }).catch((err) => {
                         hideLoader();
@@ -125,6 +149,7 @@ const ImageUpload = () => {
                              type:'DEMOGRAPHICS',                            
                              payload: {ageD,genderD}
                          })
+                         entriesCount(userDetails.email,1);
                          hideLoader();
                     }).catch((err) => {
                         hideLoader();
@@ -144,6 +169,7 @@ const ImageUpload = () => {
                     })
                     break;
                 default:
+                    
                     break;
             }
     
@@ -167,8 +193,8 @@ const ImageUpload = () => {
                     <Select variant='outlined' value={mValue} onChange={onSubmit}>
                         <MenuItem value='Choose Options'>Choose Options</MenuItem>
                         {
-                            mDropDown.map(({display,value}) => (
-                                <MenuItem value={value}>{display}</MenuItem>
+                            dropdownType?.map(({id,display,value}) => (
+                                <MenuItem key={id} value={value}>{display}</MenuItem>
                             ))
                         }
                     </Select>

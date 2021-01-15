@@ -6,7 +6,7 @@ const Joi = require('joi');
 exports.Register = async (req,res) => {
 
     const schema = Joi.object().keys({
-        username:Joi.string().required(),
+        name:Joi.string().required(),
         email: Joi.string().email().required(),
         password: Joi.string().required()
     })
@@ -18,7 +18,7 @@ exports.Register = async (req,res) => {
         return;
     }
  
-    const {username,email,password} = req.body;
+    const {name,email,password} = req.body; 
 
     const {encryptedPass,key} = await hash(password);
 
@@ -32,18 +32,18 @@ exports.Register = async (req,res) => {
         }).into('login').returning(['email','hash','key'])
           .then((loginData) => {
               const loginValue = loginData[0]
-              const regValue = {name:username,joined:new Date(),...loginValue}
-            trx('users').insert(regValue).returning('*')
+              const regValue = {name,joined:new Date(),...loginValue}
+            trx('users').insert(regValue).returning(['name','email','entries'])
             .then((user) => {
                  res.status(200).json(user[0]);
             })
-            .then(trx.commit)
+            .then(trx.commit) 
             .catch(trx.rollback)
             .catch((err) => {
                 console.log(err);
-                res.status(400).json(`Unable to register`);
+                res.status(400).json(`Unable to register`); 
             })
-          })
+        })
     })
 }
 
@@ -77,7 +77,7 @@ exports.login = (req,res) => {
             return;
         }
 
-        db.select('name','email').from('users').where('email','=',data[0].email)
+        db.select('name','email','entries').from('users').where('email','=',data[0].email)
            .then((data) => {
                res.status(200).send(data[0]);
            }).catch((err) => {
@@ -87,6 +87,4 @@ exports.login = (req,res) => {
     }).catch((err) => {
         res.status(400).send('Login validation error');
     })
-
-
 }

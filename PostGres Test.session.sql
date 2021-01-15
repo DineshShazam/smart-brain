@@ -7,6 +7,12 @@
 
 SELECT * FROM users;
 
--- SELECT * FROM login;
+-- DELETE FROM users WHERE id=18;
+
+-- DELETE FROM login WHERE id=21;
+
+-- SELECT * FROM clarifai_type;
+
+SELECT * FROM login;
 
 -- ALTER TABLE users ALTER COLUMN joined DROP NOT NULL;

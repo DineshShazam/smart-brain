@@ -1,10 +1,22 @@
-import React from 'react'
-import logo from '../../Images/logo.png'
+import React from 'react';
+import logo from '../../Images/logo.png';
 import Tilt from 'react-parallax-tilt';
+import {useHistory} from 'react-router-dom';
+import {useStateValue} from '../../Core/state';
 
 const Navbar = () => {
 
-    return (
+  const [state,dispatch] = useStateValue();
+  const history = useHistory();
+
+  const logout = () => {
+    dispatch({
+      type:'USERDETAILS',
+      payload:{}
+    })
+    history.push('/login');
+  }
+     return (
         <div style={{display:'flex',justifyContent:'space-between'}}>
 
 <div className='ma4 mt0' style={{justifyContent:'flex-start'}}>
@@ -15,10 +27,11 @@ const Navbar = () => {
         </Tilt>
       </div>
 
-      <nav >
+      <nav onClick={logout} >
             <p style={{
                  backgroundColor: '#FF5EDF',
                  borderRadius: '10px',
+                 cursor: 'pointer',
                  border: 'none',
                  color: 'white',
                  padding: '15px 32px',
@@ -39,4 +52,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default Navbar;
