@@ -29,13 +29,10 @@ const ImageUpload = () => {
     (userDetails !== {}) ? (userDetBool = true) : (userDetBool = false);
 
     useEffect(() => {
-
         (async () => {
-            console.log('clarifai dropdown method called');
-            setDropdownType(await clarifaiDropdown());
-            console.log(dropdownType);            
+            setDropdownType(await clarifaiDropdown());           
         })();
-       
+       toast.success(`Welcome ${userDetails.name}`);
     },[userDetBool])
 
     const onChange = (e) => {
@@ -44,10 +41,6 @@ const ImageUpload = () => {
             type: 'IMAGE_URL',
             payload: e.target.value
         });
-        // dispatch([{type:'EMPTY_IMAGE_URL'},{type:'EMPTY_VALUE'}])
-        // dispatch({
-        //     type:'EMPTY_IMAGE_URL'
-        // })
         dispatch({
             type:'EMPTY_VALUE'
         })
@@ -74,7 +67,7 @@ const ImageUpload = () => {
 
     const entriesCount = async(email,update) => {
       const count = await imageEntries(email,update);
-      console.log(count);
+      if(!count) {return};
       dispatch({
           type:'ENTRIESDETAILS',
           payload: count
@@ -103,7 +96,6 @@ const ImageUpload = () => {
                    }).catch((err) => {
                         hideLoader();
                        toast.error('Unable to Reach API');
-                       console.log(new Error(err));
                    })
                    break;
                 case 2:
@@ -127,7 +119,6 @@ const ImageUpload = () => {
                     }).catch((err) => {
                         hideLoader();
                         toast.error('Unable to Reach API');
-                        console.log(new Error(err));
                     })
                     break;
                 case 3:
@@ -154,20 +145,19 @@ const ImageUpload = () => {
                     }).catch((err) => {
                         hideLoader();
                         toast.error('Unable to Reach API');
-                        console.log(new Error(err));
                     })
                     break;
-                case 4:
-                    app.models.predict(
-                        Clarifai.FOOD_MODEL,
-                        imageURL
-                    ).then((response) => {
-                         console.log(response);
-                    }).catch((err) => {
-                        alert('Unable to Reach API');
-                        console.log(new Error(err));
-                    })
-                    break;
+                // case 4:
+                //     app.models.predict(
+                //         Clarifai.FOOD_MODEL,
+                //         imageURL
+                //     ).then((response) => {
+                    
+                //     }).catch((err) => {
+                //         alert('Unable to Reach API');
+                //         console.log(new Error(err));
+                //     })
+                //     break;
                 default:
                     
                     break;

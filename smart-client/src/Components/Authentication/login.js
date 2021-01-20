@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
+import {toast} from 'react-toastify'
 import './login.scss'
 import {NavLink,withRouter,useHistory} from 'react-router-dom'
-import {registerAPI,loginAPI} from '../../API/auth'
+import {registerAPI,LoginAPI,UserLoad} from '../../API/auth'
 import { useStateValue } from '../../Core/state'
 
 
 const Login = ({location}) => {
   // location.pathname
+  const history = useHistory();
   const [name,setName] = useState('');
   const [password,setPassword] = useState('');
   const [email,setEmail] = useState('');
-  const history = useHistory();
+  
 
   const [state,dispatch] = useStateValue();
 
@@ -21,17 +23,20 @@ const Login = ({location}) => {
       email,
       password
     }
-    const data = await loginAPI(valueL);
-    // const {name,email} = data;
-    if(data.name && data.email) {
-      dispatch({
-        type:'USERDETAILS',
-        payload: data
-      });
-      history.push('/home');
-    } else {
+  
+    const res = await LoginAPI(valueL);
+    if(!res) {
       return;
     }
+
+    dispatch({
+      type: 'USERDETAILS',
+      payload: res
+    });
+
+    history.push('/home');
+  
+    
   }
 
   const onRegister = async (e) => {
@@ -44,17 +49,15 @@ const Login = ({location}) => {
     }
 
     const data = await registerAPI(valueR);
-    console.log(data);
-    if(data.name && data.email) {
+    if(!data) { return }
+
       dispatch({
         type:'USERDETAILS',
         payload: data
       });
-      history.push('/home');
-    } else {
-      return;
-    }
+      history.push('/home');    
   }
+
 
     return (
         <>

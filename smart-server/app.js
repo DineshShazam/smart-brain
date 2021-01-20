@@ -15,17 +15,13 @@ app.use(express.urlencoded({extended:false}));
 app.use('/',router);
 
 // error capturing 
-app.use((req,res,next) => {
-    req.on('error',(err) => {
-        console.log(`error on Request, ${err}`)
-    });
+// app.use((req,res,next) => {
+//     req.on('error',(err) => {
+        
+//     });
 
-    res.on('error',(err) => {
-        console.log(`error on Response, ${err}`)
-    })
-
-    next();
-})
+//     next();
+// })
 
 // set router
 

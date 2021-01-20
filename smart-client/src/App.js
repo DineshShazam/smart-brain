@@ -1,16 +1,24 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import './App.css';
 import Navbar from './Components/Navigation/navbar';
-import Logo from './Components/Logo/logo';
 import ImageUpload from './Components/ImageUpload/imageUpload'
 import Login from './Components/Authentication/login'
 import RankEntries from './Components/RankEntries/rankEntries'
 import Particles from 'react-particles-js';
-import {ToastContainer} from 'react-toastify'
+import {ToastContainer,Flip} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import {Route,Switch,Redirect} from 'react-router-dom'
+import {Route,Switch,Redirect,withRouter} from 'react-router-dom'
 
-function App() {
+
+function App({history}) {
+
+  // Restricting back Navigation
+  useEffect(() => {
+    window.addEventListener("popstate", () => {
+      history.go(1);
+    });
+  },[])
+
   const particlesOptions = {
     particles: {
       number: {
@@ -22,6 +30,7 @@ function App() {
       }
     }
   }
+
   return (
     <div className="App">
       <Particles params={particlesOptions} className='particles'/>
@@ -43,20 +52,23 @@ function App() {
         <Route exact path='/home'><ImageUpload /></Route> */}
         
       </Switch>
-          <ToastContainer
-          position="top-center"
-          autoClose={2000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable={false}
-          pauseOnHover
-          />
+
+
+      <ToastContainer
+      position="top-center"
+      autoClose={2000}
+      hideProgressBar
+      newestOnTop
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable={false}
+      pauseOnHover={false}
+      transition={Flip}
+      />
 
     </div>
   );
 }
 
-export default App;
+export default withRouter(App);

@@ -6,11 +6,6 @@ const ImageDisplay = () => {
 
     const [{imageURL,imageBox,Celeb,DemoGraph},dispatch] = useStateValue();
     const {genderD,ageD} = DemoGraph;
-    // console.log(genderD);
-    // console.log(ageD);
-    // console.log(imageBox);
-    // console.log(Celeb);
-    // console.log(DemoGraph);
     return (
         <div className='center ma'>
             <div className='absolute mt2'>

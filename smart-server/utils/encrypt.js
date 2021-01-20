@@ -20,7 +20,6 @@ exports.verify = (usrPassword,salt,hashPass) => {
             try {
                 crypto.scrypt(usrPassword,salt,64,(err,derivedkey) => {
                     if(err) reject(`password decryption failed`);
-                    console.log(hashPass === derivedkey.toString('hex'));
                     resolve(hashPass === derivedkey.toString('hex'));
                 })
             } catch(err) {

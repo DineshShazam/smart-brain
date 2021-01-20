@@ -23,28 +23,42 @@ exports.Register = async (req,res) => {
     const {encryptedPass,key} = await hash(password);
 
     // frts store the value in login then store in register 
+    try {
+        
+    db.select('*').from('users').where('email','=',email).returning('email')
+                .then((result) => {
+                    if(result.length === 0) {
+                        db.transaction((trx) => {
+                            trx.insert({
+                               email,
+                               hash:encryptedPass,
+                               key 
+                            }).into('login').returning(['email','hash','key'])
+                              .then((loginData) => {
+                                  const loginValue = loginData[0]
+                                  const regValue = {name,joined:new Date(),...loginValue}
+                                trx('users').insert(regValue).returning(['name','email','entries'])
+                                .then((user) => {
+                                     res.status(200).json(user[0]);
+                                })
+                                .then(trx.commit) 
+                                .catch(trx.rollback)
+                                .catch((err) => {
+                                    res.status(400).json(`Unable to register`); 
+                                })
+                            })
+                        })
+                    } else {
+                        res.status(404).send('User Already Registered');
+                    }
+                }).catch((err) => {
+                    res.status(400).send('User Already Registered');
+                })
 
-    db.transaction((trx) => {
-        trx.insert({
-           email,
-           hash:encryptedPass,
-           key 
-        }).into('login').returning(['email','hash','key'])
-          .then((loginData) => {
-              const loginValue = loginData[0]
-              const regValue = {name,joined:new Date(),...loginValue}
-            trx('users').insert(regValue).returning(['name','email','entries'])
-            .then((user) => {
-                 res.status(200).json(user[0]);
-            })
-            .then(trx.commit) 
-            .catch(trx.rollback)
-            .catch((err) => {
-                console.log(err);
-                res.status(400).json(`Unable to register`); 
-            })
-        })
-    })
+            } catch (error) {
+                res.status(400).send('User Validation Error, Contact Admin');
+            }
+ 
 }
 
 exports.login = (req,res) => {
@@ -57,7 +71,6 @@ exports.login = (req,res) => {
     const {error} = schema.validate(req.body);
 
     if(error) {
-        console.log(error);
         res.status(400).send(error.details[0].message);
         return;
     }
