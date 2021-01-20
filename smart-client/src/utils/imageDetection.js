@@ -25,7 +25,6 @@ export const imageDetect = (response,type) => {
         case 3:
             const value3 = response.outputs[0].data.regions[0].region_info.bounding_box;
             let demoGraphics = response.outputs[0].data.regions[0].data.concepts
-            console.log(demoGraphics);
             if(!demoGraphics || !value3) {
                 alert('No DemoGraphics Found');
                 return;

@@ -1,5 +1,6 @@
 
 import axios from './endPoint/smartBrain.endpoint';
+import {toast} from 'react-toastify'
 
 export const imageEntries =async(email,update) => {
     
@@ -10,26 +11,28 @@ export const imageEntries =async(email,update) => {
                             email,
                             update
                         }});
-        console.log(data);
         return data;
     } catch (error) {
-        console.error(error);
+        const err = error.response.data;
+        if(err) {
+            toast.error(err);
+            return
+        }
     }
 
 }
 
 export const clarifaiDropdown = async() => {
-    // axios({url:'/clarifaiDropdown'}).then(({data}) => {
-    //     console.log(data);
-    //     return data;
-    // }).catch((err) => console.log(err));
     
     try {
         const {data} = await axios({url:'/clarifaiDropdown'});
-        console.log(data);
         return data;
     } catch (error) {
-        console.log(error);
+        const err = error.response.data;
+        if(err) {
+            toast.error(err);
+            return
+        }
     }
 
 }

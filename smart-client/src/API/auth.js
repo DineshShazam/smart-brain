@@ -1,28 +1,56 @@
 import axios from './endPoint/smartBrain.endpoint';
+import {toast} from 'react-toastify';
+
+// export const UserLoad = () => {
+//     // set localStorage
+// }
 
 export const registerAPI = async (value) => {
 
+    // console.error("Error response:");
+    // console.error(err.response.data); 
+    // console.error(err.response.status);  
+    // console.error(err.response.headers); 
+
     try {
-      const {data} = await axios({
-            url:'/register',
-            data:value
-        });
-        console.log(data);
-        return data;
+       const res = await axios({url:'/register',data:value});
+       return res.data;
     } catch (error) {
-        console.log(`RegisterAPI, $${error}`);
+       const err = error.response.data;
+       if(err) {
+           toast.error(err);
+           return;
+       } 
+       console.error(`Register Error,${error}`)
+    }  
+        
+}
+
+export const LoginAPI = async (value) => {
+      
+    try {
+        
+         const res = await axios.post('/login',value); 
+         return res.data;
+
+    } catch (error) {
+        const err = error.response.data;
+        if(err) {
+            toast.error(err);
+            return; 
+        }
+        return;
     }
 }
 
-export const loginAPI = async (value) => {
-    try {
-        const {data} = await axios({
-            url:'/login',
-            data:value
-        });
-        console.log(data);
-        return data;      
-    } catch (error) {
-        console.log(`loginAPI, $${error}`);
-    }
-}
+
+// await axios({
+//     url:'/register',
+//     data:value
+// }).then((result) => {
+//     console.log(result);
+//     return result.data;
+// }).catch((error) =>{
+//     console.log(error.response.data);
+//     return error.response;
+// });
