@@ -1,4 +1,7 @@
-require('dotenv').config({path:'D:/NODE-CORE/Full-Stack-Dev/webDev-2021/Smart-Brain/smart-server/config/.env'});
+const path = require('path');
+// path:'D:/NODE-CORE/Full-Stack-Dev/webDev-2021/Smart-Brain/smart-server/config/.env'
+const cnnfigPath = path.join(__dirname, '../config/.env');
+require('dotenv').config({path:cnnfigPath});
 const knex = require('knex');
 
 const psql = knex({
@@ -12,3 +15,4 @@ const psql = knex({
 })
 
 module.exports = psql
+

@@ -22,7 +22,6 @@ exports.imageEntries = (req,res) => {
         .returning('entries').then((result) => {
             res.status(200).send(result);
         }).catch((err) => {
-            console.log(err);
             res.status(400).json(`Update Image Entries Error`);
         })
     } else if(update === 0) {
@@ -30,7 +29,6 @@ exports.imageEntries = (req,res) => {
         .then((result) => {
             res.status(200).send(result[0]);
         }).catch((err) => {
-            console.log(err);
             res.status(400).json(`Image Entries Error`);
 
         })
