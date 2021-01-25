@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import {toast} from 'react-toastify'
 import './login.scss'
 import {NavLink,withRouter,useHistory} from 'react-router-dom'
-import {registerAPI,LoginAPI,UserLoad} from '../../API/auth'
+import {registerAPI,LoginAPI} from '../../API/auth'
 import { useStateValue } from '../../Core/state'
 
 
@@ -34,9 +33,7 @@ const Login = ({location}) => {
       payload: res
     });
 
-    history.push('/home');
-  
-    
+    history.push('/home');  
   }
 
   const onRegister = async (e) => {
@@ -69,10 +66,9 @@ const Login = ({location}) => {
                   </div>
                   <br/>
                   <div className="fadeIn first">
-                    <img src="https://webstockreview.net/images/clipart-brain-animated-14.png" id="icon" alt="User Icon" />
+                    <img className="lockImage" src="https://images.vexels.com/media/users/3/131263/isolated/preview/af6816ec67ec51da6b275a4aa08d236c-lock-circle-icon-by-vexels.png" id="icon" alt="User Icon" />
                   </div>
-                  <br/>
-                
+                  
                   <form>
                     {
                       location.pathname === '/login' ? 

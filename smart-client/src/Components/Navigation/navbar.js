@@ -13,19 +13,22 @@ const Navbar = () => {
     dispatch({
       type:'USERDETAILS',
       payload:{}
-    })
+    });
+    localStorage.removeItem('token');
     history.push('/login');
   }
+
+
      return (
         <div style={{display:'flex',justifyContent:'space-between'}}>
 
-<div className='ma4 mt0' style={{justifyContent:'flex-start'}}>
-        <Tilt className="Tilt br2" style={{ height: 150, width: 150 }} >
-          <div className="Tilt-inner pa3">
-            <img style={{paddingTop: '5px', borderRadius: '30px'}} alt='logo' src={logo}/>
-          </div>
-        </Tilt>
-      </div>
+        <div className='ma4 mt0' style={{justifyContent:'flex-start'}}>
+          <Tilt className="Tilt br2" style={{ height: 150, width: 150 }} >
+            <div className="Tilt-inner pa3">
+              <img style={{paddingTop: '5px', borderRadius: '30px'}} alt='logo' src={logo}/>
+            </div>
+          </Tilt>
+        </div>
 
       <nav onClick={logout} >
             <p style={{
@@ -47,8 +50,6 @@ const Navbar = () => {
         </nav>
 
         </div>
-        
-
     )
 }
 
