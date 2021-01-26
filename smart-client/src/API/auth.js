@@ -30,10 +30,18 @@ export const LoginAPI = async (value) => {
       
     try {
         
-         const res = await axios.post('/login',value); 
-         return res.data;
+         const res = await axios().post('/login',value);
+        console.log(res.data);
+         if(res.data.token) {
+             localStorage.setItem('token', res.data.token);
+             return res.data;
+         } else {
+             toast.error('Missing Token');
+             return;
+         }
 
     } catch (error) {
+        console.log(error);
         const err = error.response.data;
         if(err) {
             toast.error(err);

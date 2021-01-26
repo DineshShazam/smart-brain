@@ -1,14 +1,28 @@
 import React,{useEffect} from 'react';
 import './App.css';
 import Navbar from './Components/Navigation/navbar';
-import ImageUpload from './Components/ImageUpload/imageUpload'
-import Login from './Components/Authentication/login'
-import RankEntries from './Components/RankEntries/rankEntries'
+// import RankEntries from './Components/RankEntries/rankEntries'
 import Particles from 'react-particles-js';
 import {ToastContainer,Flip} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
-import {Route,Switch,Redirect,withRouter} from 'react-router-dom'
+import {Route,Switch,useHistory,Redirect,withRouter} from 'react-router-dom'
+import routes from './routes';
 
+
+const RenderRoute = (route) => {
+  const history = useHistory();
+  console.log(route.component);
+  console.log(route);
+
+  return (
+    <Route
+      path={route.path}
+      exact
+      render={(props) => <route.component {...props} />}
+    ></Route>
+  )
+
+}
 
 function App({history}) {
 
@@ -38,18 +52,13 @@ function App({history}) {
       {/* <Logo /> */}
       {/* Rank Component */}
       <Switch>
+
         <Redirect exact from='/' to='/login' />
-        <Route exact path='/home' render={() => 
-          <>
-            <RankEntries/>
-            <ImageUpload/>
-          </>
-        }/>
-        <Route exact path='/login' component={Login} />
-        <Route exact path='/register' component={Login} />
-        {/* <Route exact path='/login'><Login /></Route>
-        <Route exact path='/register'><Login /></Route>
-        <Route exact path='/home'><ImageUpload /></Route> */}
+        {
+          routes?.map((route,index) => (
+              <RenderRoute {...route} key={index} />
+          ))
+        }
         
       </Switch>
 

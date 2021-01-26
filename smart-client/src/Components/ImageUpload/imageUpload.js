@@ -8,6 +8,7 @@ import {useStateValue} from '../../Core/state';
 import {toast} from 'react-toastify'
 import useLoader from '../Loading&Notification/loadingHook.js'
 import {imageEntries,clarifaiDropdown} from '../../API/image'
+import RankEntries from '../RankEntries/rankEntries'
 
 
 const ImageUpload = () => {
@@ -27,13 +28,13 @@ const ImageUpload = () => {
 
     let userDetBool = false;
     (userDetails !== {}) ? (userDetBool = true) : (userDetBool = false);
-
+    console.log(userDetBool);
     useEffect(() => {
         (async () => {
             setDropdownType(await clarifaiDropdown());           
         })();
        toast.success(`Welcome ${userDetails.name}`);
-    },[userDetBool])
+    },[])
 
     const onChange = (e) => {
         e.preventDefault();
@@ -170,7 +171,7 @@ const ImageUpload = () => {
 
     return (
         <>
-    
+        <RankEntries/>
         <div>
              <p className='f3'>
                {'This Magic Brain will detect faces in your pictures. Git it a try.'}

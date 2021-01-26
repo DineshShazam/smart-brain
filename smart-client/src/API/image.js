@@ -5,19 +5,18 @@ import {toast} from 'react-toastify'
 export const imageEntries =async(email,update) => {
     
     try {
-        const {data} = await axios({
-                        url:'/imageEntries',
-                        data:{
-                            email,
-                            update
-                        }});
+        // const {data} = await axios({
+        //                 url:'/imageEntries',
+        //                 data:{
+        //                     email,
+        //                     update
+        //                 }});
+
+        const {data} = await axios().post('/imageEntries',{email,update})
         return data;
     } catch (error) {
-        const err = error.response.data;
-        if(err) {
-            toast.error(err);
-            return
-        }
+        toast.error(error);
+        return;
     }
 
 }
@@ -25,14 +24,11 @@ export const imageEntries =async(email,update) => {
 export const clarifaiDropdown = async() => {
     
     try {
-        const {data} = await axios({url:'/clarifaiDropdown'});
+        const {data} = await axios().post('/clarifaiDropdown');
         return data;
     } catch (error) {
-        const err = error.response.data;
-        if(err) {
-            toast.error(err);
-            return
-        }
+        toast.error(error);
+        return;
     }
 
 }
