@@ -3,6 +3,7 @@ import './login.scss'
 import {NavLink,withRouter,useHistory} from 'react-router-dom'
 import {registerAPI,LoginAPI} from '../../API/auth'
 import { useStateValue } from '../../Core/state'
+import { toast } from 'react-toastify'
 
 
 const Login = ({location}) => {
@@ -52,7 +53,8 @@ const Login = ({location}) => {
         type:'USERDETAILS',
         payload: data
       });
-      history.push('/home');    
+      toast.success('User Registered, Please login');
+      history.push('/login');    
   }
 
 
@@ -68,7 +70,7 @@ const Login = ({location}) => {
                   <div className="fadeIn first">
                     <img className="lockImage" src="https://images.vexels.com/media/users/3/131263/isolated/preview/af6816ec67ec51da6b275a4aa08d236c-lock-circle-icon-by-vexels.png" id="icon" alt="User Icon" />
                   </div>
-                  
+
                   <form>
                     {
                       location.pathname === '/login' ? 

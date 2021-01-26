@@ -1,9 +1,9 @@
-// import {lazy} from 'react'
+import {lazy} from 'react'
 import Login from "../Components/Authentication/login";
 import ImageUpload from "../Components/ImageUpload/imageUpload"
-import RankEntries from "../Components/RankEntries/rankEntries"
+// import RankEntries from "../Components/RankEntries/rankEntries"
 // lazy loading import
-// const LazyImageUpload = lazy(() => import("../Components/ImageUpload/imageUpload"));
+const lImageUpload = lazy(() => import("../Components/ImageUpload/imageUpload"));
 // const LazyRankEntries = lazy(() => import("../Components/RankEntries/rankEntries"));
 
 const routes = [

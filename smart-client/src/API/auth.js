@@ -13,15 +13,11 @@ export const registerAPI = async (value) => {
     // console.error(err.response.headers); 
 
     try {
-       const res = await axios({url:'/register',data:value});
+       const res = await axios().post('/register',value);
        return res.data;
     } catch (error) {
-       const err = error.response.data;
-       if(err) {
-           toast.error(err);
-           return;
-       } 
-       console.error(`Register Error,${error}`)
+      toast.error(error);
+      return;
     }  
         
 }
@@ -31,7 +27,6 @@ export const LoginAPI = async (value) => {
     try {
         
          const res = await axios().post('/login',value);
-        console.log(res.data);
          if(res.data.token) {
              localStorage.setItem('token', res.data.token);
              return res.data;
@@ -41,13 +36,14 @@ export const LoginAPI = async (value) => {
          }
 
     } catch (error) {
-        console.log(error);
-        const err = error.response.data;
-        if(err) {
-            toast.error(err);
-            return; 
-        }
+        toast.error(error);
         return;
+        // const err = error.response.data;
+        // if(err) {
+        //     toast.error(err);
+        //     return; 
+        // }
+        // return;
     }
 }
 

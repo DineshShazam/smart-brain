@@ -14,9 +14,9 @@ const AxiosInstance = () => {
         token = null;
     }
 
-    // const baseUrl = 'https://smart-server-v1.herokuapp.com';
+    const baseUrl = 'https://smart-server-v1.herokuapp.com';
 
-    const baseUrl = 'http://localhost:4041'
+    // const baseUrl = 'http://localhost:4041'
 
     // creating Instance
     const Ainstance = axios.create({
@@ -26,12 +26,10 @@ const AxiosInstance = () => {
 
     // default API headers
     Ainstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    console.log(`Bearer ${token}`);
     Ainstance.defaults.headers.post['Content-Type'] = 'application/json';
 
     // request Interceptor
     Ainstance.interceptors.request.use((request) => {
-        console.log(request);
         return request;
     },error => {
         return Promise.reject(error);
