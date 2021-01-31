@@ -9,7 +9,7 @@ export const initState = {
 }
 
 
-const reducer = (state,action) => {
+const reducer = (state = initState,action) => {
 
     switch (action.type) {
         case 'IMAGE_URL':

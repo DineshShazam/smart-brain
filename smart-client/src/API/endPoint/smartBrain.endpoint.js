@@ -46,7 +46,7 @@ const AxiosInstance = () => {
               return Promise.reject(error);
           }
 
-          if(error.response.status === 401 || error.response.status === 401  || error.response.status === 500) {
+          if(error.response.status === 401 || error.response.status === 403  || error.response.status === 500) {
                 localStorage.removeItem('token');
                 toast.error('Missing authorization');
                 window.location = '/login';

@@ -6,12 +6,12 @@ import reportWebVitals from './reportWebVitals';
 import 'tachyons';
 import {BrowserRouter} from 'react-router-dom'
 import {StateProvider} from './Core/state'
-import reducer,{initState} from './Core/reducer'
+// import reducer,{initState} from './Core/reducer'
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <StateProvider initState={initState} reducer={reducer}>
+      <StateProvider>
         <App />
       </StateProvider>
     </BrowserRouter>

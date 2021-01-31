@@ -7,13 +7,16 @@ import {ToastContainer,Flip} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import {Route,Switch,useHistory,Redirect,withRouter} from 'react-router-dom'
 import routes from './routes';
+import { useStateValue } from './Core/state';
 
 
 const RenderRoute = (route) => {
   const history = useHistory();
-  console.log(route.component);
-  console.log(route);
+  const {authState:{isLogged}} = useStateValue();
 
+  if(route.needsAuth && !isLogged) {
+   history.push('/login');
+  }
   return (
     <Route
       path={route.path}

@@ -1,6 +1,7 @@
 const db = require('../db/psql');
 const {hash,verify} = require('../utils/encrypt');
 const Joi = require('joi');
+const { tokenGen } = require('../Handler/jwtAuth');
 
 
 exports.Register = async (req,res) => {
@@ -27,6 +28,7 @@ exports.Register = async (req,res) => {
         
     db.select('*').from('users').where('email','=',email).returning('email')
                 .then((result) => {
+                    console.log(result);
                     if(result.length === 0) {
                         db.transaction((trx) => {
                             trx.insert({
@@ -52,10 +54,11 @@ exports.Register = async (req,res) => {
                         res.status(404).send('User Already Registered');
                     }
                 }).catch((err) => {
+                    console.log(err);
                     res.status(400).send('User Already Registered');
                 })
-
             } catch (error) {
+                console.log(error);
                 res.status(400).send('User Validation Error, Contact Admin');
             }
  
@@ -91,9 +94,17 @@ exports.login = (req,res) => {
         }
 
         db.select('name','email','entries').from('users').where('email','=',data[0].email)
-           .then((data) => {
-               res.status(200).send(data[0]);
+           .then(async (data) => {
+                const token = await tokenGen(data[0]);
+                if(!token && !data[0]) {
+                    res.status(404).send('User not found');
+                    return;
+                }
+                const value = data[0]
+                value['token'] = token
+               res.status(200).send(value);
            }).catch((err) => {
+               console.log(err);
                res.status(400).send('Users Fetch Error');
            })
 

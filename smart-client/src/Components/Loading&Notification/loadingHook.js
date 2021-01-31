@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import {css} from "@emotion/core"
-import {RingLoader} from 'react-spinners'
+import {ClimbingBoxLoader} from 'react-spinners'
 
 const useLoader = () => {
     
@@ -24,7 +24,7 @@ const useLoader = () => {
 `
 
     return [
-        loading ? (<div style={{position:"fixed",width:'100%',height:'100%',top:0,left:0,background:'#f8f8f8ad'}}> <RingLoader loading={loading} css={loaderCSS} size={175} color='#ff66ff'/> </div>) : null ,
+        loading ? (<div style={{position:"fixed",width:'100%',height:'100%',top:0,left:0,background:'#f8f8f8ad'}}> <ClimbingBoxLoader loading={loading} css={loaderCSS} size={20} color='#ff66ff'/> </div>) : null ,
         () => SetLoading(true),
         () => SetLoading(false)
     ]

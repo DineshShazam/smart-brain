@@ -1,5 +1,5 @@
 const app = require('./app');
-const port = 4041
+const port = (process.env.NODE_ENV === 'development') ? 4041 : process.env.PORT ;
 
 // Stop process killing on exceptions
 // process.on('uncaughtException', function(err) {

@@ -4,7 +4,10 @@ import {useStateValue} from '../../Core/state';
 
 const RankEntries = () => {
 
-    const [{userDetails,entriesValueBol,entriesValue}] = useStateValue();
+    const {
+          state:{entriesValueBol,entriesValue},
+          authState:{userDetails}
+          } = useStateValue();
    return (
         <div>
         <div className='black f3'>

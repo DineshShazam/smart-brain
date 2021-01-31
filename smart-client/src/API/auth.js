@@ -1,10 +1,6 @@
 import axios from './endPoint/smartBrain.endpoint';
 import {toast} from 'react-toastify';
 
-// export const UserLoad = () => {
-//     // set localStorage
-// }
-
 export const registerAPI = async (value) => {
 
     // console.error("Error response:");
@@ -23,9 +19,8 @@ export const registerAPI = async (value) => {
 }
 
 export const LoginAPI = async (value) => {
-      
+ 
     try {
-        
          const res = await axios().post('/login',value);
          if(res.data.token) {
              localStorage.setItem('token', res.data.token);

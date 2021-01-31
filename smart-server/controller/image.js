@@ -22,6 +22,7 @@ exports.imageEntries = (req,res) => {
         .returning('entries').then((result) => {
             res.status(200).send(result);
         }).catch((err) => {
+            console.log(err);
             res.status(400).json(`Update Image Entries Error`);
         })
     } else if(update === 0) {
@@ -40,6 +41,7 @@ exports.clarifaiType = (req,res) => {
     db.select('*').from('clarifai_type').then((data) => {
         res.status(200).send(data);
     }).catch((err) => {
+        console.log(err);
         res.status(400).send('Clarifai Dropdown Data Error');
     })
 }

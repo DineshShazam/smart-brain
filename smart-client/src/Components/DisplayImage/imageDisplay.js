@@ -4,7 +4,7 @@ import './imageDisplay.css'
 
 const ImageDisplay = () => {
 
-    const [{imageURL,imageBox,Celeb,DemoGraph},dispatch] = useStateValue();
+    const {state:{imageURL,imageBox,Celeb,DemoGraph}} = useStateValue();
     const {genderD,ageD} = DemoGraph;
     return (
         <div className='center ma'>

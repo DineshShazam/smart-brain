@@ -1,108 +1,134 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './login.scss'
-import {NavLink,withRouter,useHistory} from 'react-router-dom'
-import {registerAPI,LoginAPI} from '../../API/auth'
+import { NavLink, withRouter, useHistory } from 'react-router-dom'
+import { registerAPI, LoginAPI } from '../../API/auth'
 import { useStateValue } from '../../Core/state'
 import { toast } from 'react-toastify'
+import { useForm } from 'react-hook-form'
+import useLoader from '../Loading&Notification/loadingHook'
 
 
-const Login = ({location}) => {
+const Login = ({ location }) => {
   // location.pathname
   const history = useHistory();
-  const [name,setName] = useState('');
-  const [password,setPassword] = useState('');
-  const [email,setEmail] = useState('');
-  
+  const {authDispatch} = useStateValue();
 
-  const [state,dispatch] = useStateValue();
+  const [loading,showLoading,hideLoading] = useLoader()
+  const { register, handleSubmit, errors } = useForm();
 
-  const onLogin = async (e) => {
-    e.preventDefault();
-
-    const valueL = {
-      email,
-      password
-    }
-  
-    const res = await LoginAPI(valueL);
-    if(!res) {
+  const onLogin = async (data) => {
+    showLoading();
+    const res = await LoginAPI(data);
+    if (!res) {
+      hideLoading();
       return;
     }
-
-    dispatch({
+    authDispatch({type:'ISLOGGED'})
+    authDispatch({
       type: 'USERDETAILS',
       payload: res
     });
-
-    history.push('/home');  
+    hideLoading();
+    history.push('/home');
   }
 
-  const onRegister = async (e) => {
-    e.preventDefault();
+  const onRegister = async (Rdata) => {
+    showLoading();
+    const data = await registerAPI(Rdata);
+    if (!data) { hideLoading(); 
+                return }
 
-    const valueR = {
-      name,
-      password,
-      email
-    }
-
-    const data = await registerAPI(valueR);
-    if(!data) { return }
-
-      dispatch({
-        type:'USERDETAILS',
-        payload: data
-      });
-      toast.success('User Registered, Please login');
-      history.push('/login');    
+      authDispatch({
+      type: 'USERDETAILS',
+      payload: data
+    });
+    hideLoading();
+    toast.success('User Registered, Please login');
+    history.push('/login');
   }
 
 
-    return (
-        <>
-            <div className="wrapper fadeInDown">
-                <div id="formContent">
-                  <div className='navhead'>
-                    <NavLink exact to='/login' activeClassName='navbar--active' className="active1"> Sign In </NavLink>
-                    <NavLink exact to='/register' activeClassName='navbar--active' className="active1">Sign Up </NavLink>
-                  </div>
-                  <br/>
-                  <div className="fadeIn first">
-                    <img className="lockImage" src="https://images.vexels.com/media/users/3/131263/isolated/preview/af6816ec67ec51da6b275a4aa08d236c-lock-circle-icon-by-vexels.png" id="icon" alt="User Icon" />
-                  </div>
-
-                  <form>
-                    {
-                      location.pathname === '/login' ? 
-                      <> 
-                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="email" onChange={(e) => {setEmail(e.target.value)}} required/>
-                        <input type="password" id="password" className="fadeIn third" name="password" placeholder="password" onChange={(e) => {setPassword(e.target.value)}} required/>
-                        <button type='submit' className="fadeIn button-space" onClick={onLogin}>LOGIN</button>
-                      </> 
-                      : 
-                      <>
-                        <input type="text" id="login" className="fadeIn second" name="login" placeholder="username" onChange={(e) => {setName(e.target.value)}} required/>
-                        <input type="password" id="password" className="fadeIn third" name="password" placeholder="password"  onChange={(e) => {setPassword(e.target.value)}} required/>
-                        <input type="email" id="password" className="fadeIn" name="email" placeholder="e-mail"  onChange={(e) => {setEmail(e.target.value)}} required/>
-                        <button type='submit' className="fadeIn button-space" onClick={onRegister}>REGISTER</button>
-                      </>
-
-                      
-                    }
-                    
-                    {/* <input type="submit" className="fadeIn fourth" value="Log In"/> */}
-                  </form>
+  return (
+    <>
+      <div className="wrapper fadeInDown">
+        <div id="formContent">
+          <div className='navhead'>
+            <NavLink exact to='/login' activeClassName='navbar--active' className="active1"> Sign In </NavLink>
+            <NavLink exact to='/register' activeClassName='navbar--active' className="active1">Sign Up </NavLink>
+          </div>
+          <br />
+          <div className="fadeIn first">
+            <img className="lockImage" src="https://images.vexels.com/media/users/3/131263/isolated/preview/af6816ec67ec51da6b275a4aa08d236c-lock-circle-icon-by-vexels.png" id="icon" alt="User Icon" />
+          </div>
 
 
-                  {/* <div id="formFooter">
+          {
+            location.pathname === '/login' ?
+              <form onSubmit={handleSubmit(onLogin)}>
+                <input type="text" id="login" className="fadeIn second" name="email" ref={register({
+                  required: {
+                    value:true,
+                    message:'Email Must!'
+                  },
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "*Invalid email address"
+                  }
+                }
+                )} placeholder="email" />
+                {/* displaying error message */}
+                {
+                  errors.email && <div className='validationBox'>{errors.email.message}</div>
+                }
+
+                <input type="password" id="password" className="fadeIn third" name="password" ref={register({ required: { value: true, message: 'Password Must' } })} placeholder="password" />
+                {
+                  errors.password && <div className='validationBox'>{errors.password.message}</div>
+                }
+                <br/>
+                <input type='submit' className="fadeIn button-space" value='LOGIN' />
+              </form>
+              :
+              <form onSubmit={handleSubmit(onRegister)}>
+                <input type="text" id="login" className="fadeIn second" name="username" ref={register({ required: true })} placeholder="username" />
+                {
+                  errors.username && <div className='validationBox'>Please Enter UserName</div>
+                }
+                <input type="password" id="password" className="fadeIn third" name="password" ref={register({ required: true })} placeholder="password" />
+                {
+                  errors.password && <div className='validationBox'>'Please Enter Password</div>
+                }
+                <input type="email" id="password" className="fadeIn" name="email" ref={register({
+                  required: {
+                    value: true,
+                    message: 'Please Enter Email'
+                  },
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "invalid email address"
+                  }
+                })} placeholder="e-mail" />
+                {
+                  errors.email && <div className='validationBox'>{errors.email.message}</div>
+                }
+                <br/>
+                <input type='submit' className="fadeIn button-space" value='REGISTER' />
+              </form>
+
+
+          }
+
+          {/* <input type="submit" className="fadeIn fourth" value="Log In"/> */}
+
+          {/* <div id="formFooter">
                     <a className="underlineHover" href="#">Forgot Password?</a>
                   </div> */}
 
-                </div>
-            </div>
-
-        </>
-    )
+        </div>
+      </div>
+      {loading}
+    </>
+  )
 }
 
 export default withRouter(Login);

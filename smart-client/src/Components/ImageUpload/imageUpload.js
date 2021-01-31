@@ -13,22 +13,27 @@ import RankEntries from '../RankEntries/rankEntries'
 
 const ImageUpload = () => {
 
-    const [{imageURL,userDetails},dispatch] = useStateValue();
+    // const [{userDetails,imageURL},dispatch] = useStateValue();
+    const {
+            authState:{userDetails},
+            state:{imageURL},
+            dispatch
+        } = useStateValue();
     const [mValue,setMvalue] = useState('Choose Options');
 
     // Custom Hook
     const [loader,showLoader,hideLoader] = useLoader();
+
     // Clarifai.FACE_DETECT_MODEL,Clarifai.CELEBRITY_MODEL,
     // Clarifai.DEMOGRAPHICS_MODEL,Clarifai.FOOD_MODEL
-
     const [dropdownType,setDropdownType] = useState([]);
     const app = new Clarifai.App({
         apiKey: 'bdd12b71f8c149468592c8059018a545'
     })
 
-    let userDetBool = false;
-    (userDetails !== {}) ? (userDetBool = true) : (userDetBool = false);
-    console.log(userDetBool);
+    // let userDetBool = false;
+    // (userDetails !== {}) ? (userDetBool = true) : (userDetBool = false);
+
     useEffect(() => {
         (async () => {
             setDropdownType(await clarifaiDropdown());           

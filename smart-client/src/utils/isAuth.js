@@ -1,10 +1,16 @@
 const isAuth = () => {
     const APItoken = localStorage.getItem('token');
-
+    console.log(APItoken);
     if(APItoken) {
-        return true;
+        return {
+            APItoken,
+            isLogged:true
+        };
     } else {
-        return false;
+        return {
+            APItoken:null,
+            isLogged:false
+        };
     }
 }
 

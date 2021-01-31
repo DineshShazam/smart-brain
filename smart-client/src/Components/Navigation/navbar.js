@@ -6,11 +6,11 @@ import {useStateValue} from '../../Core/state';
 
 const Navbar = () => {
 
-  const [state,dispatch] = useStateValue();
+  const {authDispatch} = useStateValue();
   const history = useHistory();
 
   const logout = () => {
-    dispatch({
+    authDispatch({
       type:'USERDETAILS',
       payload:{}
     });
